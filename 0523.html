@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset = "utf-8">
+	<script src = "echarts.simple.min.js"></script>	
+	<title>data illustration</title>
+	<style>
+	body{
+	    font-family:Microsoft YaHei;
+		color:#848484;
+	}
+	table{
+	    width:700px;
+		text-align:left;
+		border-collapse:collapse;
+	}
+	th,td{
+	    width:16%;
+		height:50px;
+		font-weight:normal;
+		font-size:14px;
+		border:1px solid #e4e4e4;
+	}
+	input{
+		border:0px;
+	}
+	.arow{
+	    width:1200px;
+		margin:0 auto;
+        border-bottom:1px solid #e4e4e4;
+		padding-top:10px;
+		padding-bottom:10px;
+		overflow:hidden;
+	}
+	.nav{
+	    width:400px;
+		height:100px;
+		float:left;
+		font-size:20px;
+		padding-left:20px;
+	}
+	.box{
+		width:780px;
+		float:left;
+	}
+	.content{
+	    //margin-right:20px;
+		width:190px;
+		float:left;
+	}
+	.NavTag{
+	    margin-left:30px;
+		float:left;
+	}
+	.NavTag:hover{
+	    color:#848484;
+	}
+	.aRowInDiv{
+	    border-bottom:1px dashed #e4e4e4;
+		padding:10px 0;
+		overflow:hidden;
+	}	
+	.ParaNav{
+	    float:left;
+		text-align:center;
+		height:60px;
+		width:100px;
+		padding-top:20px;
+	}
+	.ParaButton{
+	    float:left;
+		text-align:center;
+		height:50px;
+		width:130px;
+		padding-top:25px;
+		font-size:20px;
+		border:1px solid;
+		border-radius:5px;
+	}
+	#FluxChart{
+	    height:400px;
+		width:700px;
+	    float:left;
+	}
+	#PlanChart{
+	    padding-top:25px;
+	    height:400px;
+		width:690px;
+		//border:1px solid #e4e4e4;
+	    float:left;
+	}
+	#PlanPara{
+	    height:400px;
+		width:500px;
+		//border:1px solid #e4e4e4;
+	    float:right;
+	}
+	#HeadNav{
+	    position:absolute;
+		top:0;
+		left:0;
+		right:0;
+		color:#bbbbbb;
+	    background-color:#f6f6f6;
+		border:1px solid #e4e4e4;
+		position:fixed;
+		overflow:hidden;
+		z-index:1;
+	}
+	#GenButton{
+		position:fixed;
+		right:0;
+		bottom:0;
+		text-align:center;
+		height:50px;
+		width:130px;
+		padding-top:25px;
+		font-size:20px;
+		border:1px solid;
+		border-radius:5px;
+		background-color:#e4e4e4;
+	}
+	</style>
+</head>
+<body>
+	<div id="HeadNav">
+		<div class="NavTag">
+		<p>CAP1400通量计算</p>
+		</div>
+	</div>
+	<div style="height:50px;"></div>
+	<div class="arow" name="ChartandPara">
+		<div id="FluxChart"></div>
+		<div id="PlanPara">
+		<div style="border-bottom:1px dashed #e4e4e4;">
+		<p style="color:black; font-size:24px">堆芯关键参数</p>
+		</div>
+		<div class="aRowInDiv">
+		<div class="ParaNav">堆芯功率<br>(MW)</div>
+		<div class="ParaButton" id="ReaPowerTop" style="border-color:#d78064"></div>
+		<div class="ParaNav">堆芯体积<br>(m3)</div>
+		<div class="ParaButton" style="border-color:#56a3ad" id="ReaVolumeTop"></div>
+		</div>
+		<div class="aRowInDiv">
+		<div class="ParaNav">周期<br>(day)</div>
+		<div class="ParaButton" style="border-color:#d78064" id="ReaCycleTop">540</div>
+		<div class="ParaNav">铀装量<br>(kg)</div>
+		<div class="ParaButton" style="border-color:#56a3ad" id="ULoadTop">104079</div>
+		</div>
+		<div class="aRowInDiv">
+		<div class="ParaNav">铀235消耗<br>(kg)</div>
+		<div class="ParaButton" id="UBurnupTop">0.028</div>
+		</div>
+		</div>
+	</div>
+
+	<div class="arow" name="Details">
+		<p style="font-weight:bold; font-size:24px">详细参数</p>
+	</div>
+	<div class="arow" name="FirstRow">
+		<div class="nav">
+			<p>堆芯几何参数</p>
+		</div>
+		<div class="box">
+			<div class="content" name="content11">
+				<p>堆芯等效直径(m)</p>
+				<input id="ReaDiameter" value="3.371">
+			</div>
+			<div class="content" name="content12">
+				<p>堆芯高度(m)</p>
+				<input id="ReaHeight" value="4.2672">
+			</div>
+			<div class="content" name="content13">
+				<p>堆芯体积(m3)</p>
+				<p id="ReaVolume"></p>
+			</div>
+		</div>
+	</div>
+	<div class="arow" name="SecondRow">
+		<div class="nav">
+			<p>循环参数</p>
+		</div>
+		<div class="box">
+			<div class="content" name="content21">
+				<p>寿期初铀235富集度</p>
+				<input id="BolEnrichment" value="0.028008">
+			</div>
+			<div class="content" name="content22">
+				<p>铀235装载量(kg)</p>
+				<input id="ULoad" value="104079">
+			</div>
+			<div class="content" name="content23">
+				<p>堆芯热功率(MW)</p>
+				<input id="ReaPower" value="4040">
+			</div>
+			<div class="content" name="content24">
+				<p>周期(d)</p>
+				<input id="ReaCycle" value="540">
+			</div>
+		</div>
+	</div> 
+	<div class="arow" name="ThirdRow">
+		<div class="nav">
+			<p>物理参数</p>
+		</div>
+		<div class="box">
+			<div class="content" name="content21">
+				<p>1MW/d裂变铀质量常数<br>(kg)(c2f considered)</p>
+				<input id="MassConstant" value="0.00123">
+			</div>
+			<div class="content" name="content22">
+				<p>运行<br>因子</p>
+				<input id="OpFactor" value="0.93">
+			</div>
+			<div class="content" name="content23">
+				<p>铀235俘获-裂变比<br>(c2f)</p>
+				<input id="C2F" value="0.169">
+			</div>
+			<div class="content" name="content24">
+				<p>1J能量需要的<br>U235裂变次数</p>
+				<input id="FissTime" value="3.12e+10">
+			</div>
+			<div class="content" name="content21">
+				<p>0.0253eV下U235的<br>微观吸收截面(b)</p>
+				<input id="MicroSection" value="680.9">
+			</div>
+			<div class="content" name="content22">
+				<p>单位体积UO2的<br>分子数N(UO2)</p>
+				<input id="UO2Count" value="2.325e+28">
+			</div>
+			<div class="content" name="content23">
+				<p>循环消耗铀235的<br>质量(kg)</p>
+				<p id="UBurnup"></p>
+			</div>
+		</div>
+	</div>
+	<div class="arow" name="FourthRow">
+		<div class="nav">
+			<p>寿期初输出</p>
+		</div>
+		<div class="box">
+			<div class="content" name="content21">
+				<p>寿期初<br>铀235富集度</p>
+				<p id="BolEnrichmentBot"><p>
+			</div>
+			<div class="content" name="content22">
+				<p>丰度<br>C1</p>
+				<p id="BolAbundance"><p>
+			</div>
+			<div class="content" name="content23">
+				<p>寿期初U235<br>宏观吸收截面(m-1)</p>
+				<p id="BolMacro"><p>
+			</div>
+			<div class="content" name="content24">
+				<p>寿期初中子通量水平<br>(m2/s)</p>
+				<p id="BolFlow"><p>
+			</div>
+		</div>
+	</div>
+	<div class="arow" name="FifthRow">
+		<div class="nav">
+			<p>寿期末输出</p>
+		</div>
+		<div class="box">
+			<div class="content" name="content21">
+				<p>寿期末<br>铀235富集度</p>
+				<p id="EolEnrichmentBot"><p>
+			</div>
+			<div class="content" name="content22">
+				<p>丰度<br>C2</p>
+				<p id="EolAbundance"><p>
+			</div>
+			<div class="content" name="content23">
+				<p>寿期末U235<br>宏观吸收截面(m-1)</p>
+				<p id="EolMacro"><p>
+			</div>
+			<div class="content" name="content24">
+				<p>寿期末中子通量水平<br>(m2/s)</p>
+				<p id="EolFlow"><p>
+			</div>
+		</div>
+	</div> 	
+	<div id="GenButton" onclick="GenChart()">生成图表</div>
+	<script type = "text/javascript">
+		
+		function GenChart(){
+			var rea_volume = Math.PI * Math.pow(parseFloat(document.getElementById("ReaDiameter").value)/2,2) * parseFloat(document.getElementById("ReaHeight").value);
+			var bol_enrichment = parseFloat(document.getElementById("BolEnrichment").value);
+			var u_load = parseFloat(document.getElementById("ULoad").value);
+			var rea_power = parseFloat(document.getElementById("ReaPower").value);
+			var rea_cycle = parseFloat(document.getElementById("ReaCycle").value);
+			var mass_constant = parseFloat(document.getElementById("MassConstant").value);
+			var op_factor = parseFloat(document.getElementById("OpFactor").value);
+			var c2_f = parseFloat(document.getElementById("C2F").value);
+			var fiss_time = parseFloat(document.getElementById("FissTime").value);
+			var micro_section = parseFloat(document.getElementById("MicroSection").value);
+			var uo2_count = parseFloat(document.getElementById("UO2Count").value);
+			var u_burnup = rea_power * rea_cycle * mass_constant * op_factor
+			
+			var bol_abundance = 1/(1+0.9874*(1/bol_enrichment-1));
+			var bol_macro = uo2_count * bol_abundance * micro_section * 1E-28;
+			var bol_flow = fiss_time * rea_power * 1E+6 / rea_volume / bol_macro;
+			var eol_enrichment = (bol_enrichment * u_load - u_burnup) / u_load;
+			var eol_abundance = 1/(1+0.9874*(1/eol_enrichment-1));
+			var eol_macro = uo2_count * eol_abundance * micro_section * 1E-28;
+			var eol_flow = fiss_time * rea_power * 1E+6 / rea_volume / eol_macro;
+			
+			document.getElementById("ReaPowerTop").innerHTML = rea_power;
+			document.getElementById("ReaVolume").innerHTML = rea_volume.toFixed(3);
+			document.getElementById("ReaVolumeTop").innerHTML = rea_volume.toFixed(3);
+			document.getElementById("ReaCycleTop").innerHTML = rea_cycle;
+			document.getElementById("ULoadTop").innerHTML = u_load.toExponential(3);
+			document.getElementById("UBurnupTop").innerHTML = u_burnup.toFixed(3);
+			document.getElementById("UBurnup").innerHTML = u_burnup.toFixed(3);
+			
+			document.getElementById("BolEnrichmentBot").innerHTML = bol_enrichment.toFixed(3);
+			document.getElementById("BolAbundance").innerHTML = bol_abundance.toFixed(3);
+			document.getElementById("BolMacro").innerHTML = bol_macro.toFixed(3);
+			document.getElementById("BolFlow").innerHTML = bol_flow.toExponential(3);
+			document.getElementById("EolEnrichmentBot").innerHTML = eol_enrichment.toFixed(3);
+			document.getElementById("EolAbundance").innerHTML = eol_abundance.toFixed(3);
+			document.getElementById("EolMacro").innerHTML = eol_macro.toFixed(3);
+			document.getElementById("EolFlow").innerHTML = eol_flow.toExponential(3);
+			
+			PowerChart(rea_power, mass_constant, op_factor, bol_enrichment, u_load, micro_section, uo2_count, fiss_time, rea_volume)
+		}
+		function PowerChart(rea_power, mass_constant, op_factor, bol_enrichment, u_load, micro_section, uo2_count, fiss_time, rea_volume){
+			var oneDay = 24 * 3600 * 1000;
+			var charttest = echarts.init(document.getElementById('FluxChart'));
+			var base = +new Date(2019, 4, 22);
+			
+			var date = [];
+			var flux = [];
+			for (var efp_day = 1; efp_day < 500; efp_day++) {
+				var u_burnup_ing = rea_power * mass_constant * op_factor * efp_day;
+				var enrichment_ing = (bol_enrichment * u_load - u_burnup_ing) / u_load;
+				var abundance_ing = 1/(1+0.9874*(1/enrichment_ing-1));
+				var macro_ing = uo2_count * abundance_ing * micro_section * 1E-28;
+				var flow_ing = fiss_time * rea_power * 1E+6 / rea_volume / macro_ing;
+				
+				var now = new Date(base += oneDay);
+				date.push([now.getFullYear(), now.getMonth()+1, now.getDate()].join('/'));
+				flux.push(flow_ing*1e-17);
+			}
+			
+			option = {
+			 title: {
+			 	text: '中子通量随燃耗变化值',
+			 },
+			 xAxis: {
+				 type: 'category',
+				 data: date
+			 },
+			 yAxis: {
+				 type: 'value',
+				 axisLabel: {
+					formatter: '{value}E-17'
+				 }
+			 },
+			 series: [
+				   {
+					   type:'line',
+					   data: flux
+				   }
+			 ]
+			};
+		charttest.setOption(option); 
+		}
+		GenChart()
+	</script>
+</body>
+</html>
